@@ -51,33 +51,6 @@ export default function App() {
     };
   }
 
-  useEffect(() => {
-    setIsAuthLoading(true);
-    if (Cookies.get("userinfo")) {
-      // We are here after a login
-      const userInfoCookie = Cookies.get("userinfo");
-      sessionStorage.setItem("userInfo", userInfoCookie || "");
-      Cookies.remove("userinfo");
-      var userInfo = userInfoCookie ? JSON.parse(atob(userInfoCookie)) : {};
-      setSignedIn(true);
-      setUser(getMappedUser(userInfo));
-    } else if (sessionStorage.getItem("userInfo")) {
-      // We have already logged in
-      var userInfo = JSON.parse(atob(sessionStorage.getItem("userInfo")!));
-      setSignedIn(true);
-      setUser(getMappedUser(userInfo));
-    } else {
-      console.log("User is not signed in");
-      if (
-        window.location.pathname !== "/auth/login" &&
-        window.location.pathname !== "/"
-      ) {
-        window.location.pathname = "/auth/login";
-      }
-    }
-    setIsAuthLoading(false);
-  }, []);
-
   if (isAuthLoading) {
     return <div>User authenticating...</div>;
   }
